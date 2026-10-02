@@ -6,21 +6,19 @@ async function init(){
     const top_movies_container = document.getElementById("top_movies").querySelector(".section_content");
     const action_movies_container = document.getElementById("action_movies").querySelector(".section_content");
     const comedy_movies_container = document.getElementById("comedy_movies").querySelector(".section_content");
-    const other_movies1_container = document.getElementById("other_movies1").querySelector(".section_content");
-    const other_movies2_container = document.getElementById("other_movies2").querySelector(".section_content");
-    const other_movies1_select = document.getElementById("other_movies1_select");
-    const other_movies2_select = document.getElementById("other_movies2_select");
+    const other_movies_selector = document.querySelectorAll(".genre_select");
+    
+
     let genres = await getGenres();
-    genres.forEach(genre => {
-        let option1 = document.createElement("option");
-        option1.value = genre;
-        option1.textContent = genre;
-        other_movies1_select.appendChild(option1);
-        let option2 = document.createElement("option");
-        option2.value = genre;
-        option2.textContent = genre;
-        other_movies2_select.appendChild(option2);
+    other_movies_selector.forEach(select => {
+        genres.forEach(genre => {
+            let option1 = document.createElement("option");
+            option1.value = genre; 
+            option1.textContent = genre;
+            select.appendChild(option1);
+        });
     });
+    
     let highscores = await getBetterMovies("");
     const best = highscores[0];
     best_movie_poster.src = best.image_url;
@@ -34,6 +32,7 @@ async function init(){
     for (let i = 1; i <7 ; i++){
         createVignette(highscores[i], top_movies_container);
     }
+
     let action_movies = await getBetterMovies("Action");
     let i = 0;
     for (const movie of action_movies) {
@@ -41,6 +40,7 @@ async function init(){
         i++;
         if (i >= 6) break;
     }
+    
     let comedy_movies = await getBetterMovies("Comedy");
     i = 0;
     for (const movie of comedy_movies) {
@@ -49,32 +49,22 @@ async function init(){
         if (i >= 6) break;
     }
 
-    other_movies1_select.addEventListener("change", async () => {
-        clearContainer(other_movies1_container);
-        const genre = other_movies1_select.value;
-        const movies = await getBetterMovies(genre);
-        let i = 0;
-        for (const movie of movies) {
-            createVignette(movie, other_movies1_container);
-            i++;
+    other_movies_selector.forEach((select) => {
+        select.addEventListener("change", async () => {
+            const container = select.closest(".section").querySelector(".section_content");
+            clearContainer(container);
+            const genre = select.value;
+            if (genre !== "") {
+                const movies = await getBetterMovies(genre);
+                let i = 0;
+                for (const movie of movies) {
+                createVignette(movie, container);
+                i++;
             if (i >= 6) break;
+            }
         }
+        });
     });
-
-    other_movies2_select.addEventListener("change", async () => {
-        clearContainer(other_movies2_container);
-        const genre = other_movies2_select.value;
-        const movies = await getBetterMovies(genre);
-        let i = 0;
-        for (const movie of movies) {
-            createVignette(movie, other_movies2_container);
-            i++;
-            if (i >= 6) break;
-        }
-    });
-
-    other_movies1_select.dispatchEvent(new Event("change"));
-    other_movies2_select.dispatchEvent(new Event("change"));
 }
 
 async function createVignette(movie, container){

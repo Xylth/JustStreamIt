@@ -30,24 +30,26 @@
         };
     </script>
 
-    <!-- Nombre de vignettes visibles selon l'écran : 2 en mobile, 4 en tablette, 6 en desktop.
-         Le bouton "Voir plus" ajoute la classe .expanded à la section pour tout afficher. -->
-    <style type="text/tailwindcss">
+   <style type="text/tailwindcss">
         @layer components {
+            /* Mobile : on masque à partir de la 3e */
             .section_content > .vignette:nth-child(n+3) { @apply hidden; }
+
+            /* Tablette : on réaffiche les 4 premières */
             @media screen(md) {
                 .section_content > .vignette:nth-child(-n+4) { @apply block; }
             }
+
+            /* Desktop : on réaffiche les 6 premières (et non toutes) */
             @media screen(lg) {
-                .section_content > .vignette:nth-child(n) { @apply block; }
+                .section_content > .vignette:nth-child(-n+6) { @apply block; }
             }
-            .section.expanded .section_content > .vignette:nth-child(n) { @apply block; }
+
+            /* "Voir plus" : tout afficher, quel que soit l'écran */
+            .section.expanded .section_content > .vignette { @apply block; }
         }
     </style>
 
-    <script defer src="fetcher.js"></script>
-    <script defer src="logic.js"></script>
-    <script defer src="modal.js"></script>
 </head>
 <body class="bg-white font-oswald text-black">
 
@@ -114,6 +116,7 @@
                 <h1 class="section_title text-[32px] font-semibold md:text-[40px] lg:text-5xl">Autres:</h1>
                 <div class="relative w-[285px] md:w-[242px] lg:w-[404px]">
                     <select class="genre_select w-full cursor-pointer appearance-none border border-black bg-white py-2 pl-3 pr-12 text-[28px] font-semibold md:text-[32px] lg:py-3 lg:pl-5 lg:text-4xl" id="other_movies1_select" name="genre">
+                        <option value="">Select a genre</option>
                     </select>
                     <span class="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-2xl lg:text-3xl" aria-hidden="true">▼</span>
                 </div>
@@ -130,6 +133,7 @@
                 <h1 class="section_title text-[32px] font-semibold md:text-[40px] lg:text-5xl">Autres:</h1>
                 <div class="relative w-[285px] md:w-[242px] lg:w-[404px]">
                     <select class="genre_select w-full cursor-pointer appearance-none border border-black bg-white py-2 pl-3 pr-12 text-[28px] font-semibold md:text-[32px] lg:py-3 lg:pl-5 lg:text-4xl" id="other_movies2_select" name="genre">
+                        <option value="">Select a genre</option>
                     </select>
                     <span class="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-2xl lg:text-3xl" aria-hidden="true">▼</span>
                 </div>
@@ -193,6 +197,9 @@
             });
         });
     </script>
-
+    
+    <script defer src="fetcher.js"></script>
+    <script defer src="logic.js"></script>
+    <script defer src="modal.js"></script>
 </body>
 </html>

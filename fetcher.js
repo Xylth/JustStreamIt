@@ -29,12 +29,6 @@ async function getGenres(){
     return data;
 }
 
-async function getMovieData(film){
-    let response = await fetch(film.url)
-    let raw = await response.json()
-    return {title:raw.original_title,year:raw.year,duration:raw.duration,description:raw.long_description,rating: raw.imdb_score,income: raw.worldwide_gross_income,staring: raw.actors,directing:raw.directors,genres:raw.genres,countries:raw.countries,rated: raw.rated };
-}
-
 async function getMovieShort(film){
     let response = await fetch(film.url)
     let raw = await response.json()
