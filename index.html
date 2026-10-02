@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JustStreamIt</title>
+
+    <!-- Polices -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&display=swap" rel="stylesheet">
+
+    <!-- Tailwind (Play CDN) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    // Couleurs relevées dans la maquette Figma
+                    colors: {
+                        header: '#60777e',
+                        brand: '#fa0a0a',
+                        dark: '#2c2b2b',
+                    },
+                    fontFamily: {
+                        oswald: ['Oswald', 'sans-serif'],
+                    },
+                },
+            },
+        };
+    </script>
+
+    <!-- Nombre de vignettes visibles selon l'écran : 2 en mobile, 4 en tablette, 6 en desktop.
+         Le bouton "Voir plus" ajoute la classe .expanded à la section pour tout afficher. -->
+    <style type="text/tailwindcss">
+        @layer components {
+            .section_content > .vignette:nth-child(n+3) { @apply hidden; }
+            @media screen(md) {
+                .section_content > .vignette:nth-child(-n+4) { @apply block; }
+            }
+            @media screen(lg) {
+                .section_content > .vignette:nth-child(n) { @apply block; }
+            }
+            .section.expanded .section_content > .vignette:nth-child(n) { @apply block; }
+        }
+    </style>
+
+    <script defer src="fetcher.js"></script>
+    <script defer src="logic.js"></script>
+    <script defer src="modal.js"></script>
+</head>
+<body class="bg-white font-oswald text-black">
+
+    <!-- En-tête : logo + slogan (le slogan est masqué en mobile) -->
+    <header class="mx-auto mt-4 flex max-w-[840px] items-center justify-center gap-10 border border-black bg-header px-5 py-2 md:mx-4 md:justify-start lg:mx-auto">
+        <img src="images/logo.png" alt="logo site" class="h-32 w-auto md:h-28 lg:h-24">
+        <p class="hidden text-[40px] font-light text-white md:block">Vidéos à la demande</p>
+    </header>
+
+    <main class="mx-auto max-w-[840px] px-4 pb-16 lg:px-0">
+
+        <!-- Meilleur film -->
+        <div class="section mt-8" id="top1">
+            <div class="section_header mb-4">
+                <h1 class="section_title text-center text-[32px] font-semibold md:text-left md:text-[40px] lg:text-5xl">Meilleur film</h1>
+            </div>
+            <div id="section_content_best_movie" class="flex flex-col gap-4 border border-black p-4 md:flex-row md:gap-6 md:p-5">
+                <img src="" alt="Affiche meilleur film" onerror="this.src='images/placeholder.png'" id="best_movie_poster"
+                     class="h-60 w-full object-cover md:h-[246px] md:w-[168px] lg:h-[334px] lg:w-[227px]">
+                <div class="flex flex-1 flex-col">
+                    <h1 id="best_movie_title" class="text-[32px] font-semibold leading-tight md:text-[40px] lg:text-5xl">title placeholder</h1>
+                    <p id="best_movie_short_description" class="mt-2 text-base font-extralight md:mt-4 md:text-2xl lg:text-[28px] lg:leading-snug">short description placeholder</p>
+                    <button id="best_movie_button" class="mt-4 self-end rounded-full bg-brand px-6 py-1.5 text-base text-white hover:brightness-110 md:mt-auto md:px-8 md:py-2 md:text-xl lg:px-10 lg:py-4 lg:text-2xl">Détails</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Films les mieux notés -->
+        <div class="section mt-10 lg:mt-12" id="top_movies">
+            <div class="section_header mb-6 flex flex-col items-center gap-3 md:flex-row md:gap-8">
+                <h1 class="section_title text-[32px] font-semibold md:text-[40px] lg:text-5xl">Films les mieux notés</h1>
+            </div>
+            <div class="section_content grid grid-cols-1 gap-7 md:grid-cols-2 md:gap-8 lg:grid-cols-3 lg:gap-x-11 lg:gap-y-10">
+
+            </div>
+            <button class="expand_button mx-auto mt-8 block w-[214px] rounded-full bg-brand py-1.5 text-xl text-white hover:brightness-110 lg:hidden">Voir plus</button>
+        </div>
+
+        <!-- Action -->
+        <div class="section mt-10 lg:mt-12" id="action_movies">
+            <div class="section_header mb-6 flex flex-col items-center gap-3 md:flex-row md:gap-8">
+                <h1 class="section_title text-[32px] font-semibold md:text-[40px] lg:text-5xl">Action</h1>
+            </div>
+            <div class="section_content grid grid-cols-1 gap-7 md:grid-cols-2 md:gap-8 lg:grid-cols-3 lg:gap-x-11 lg:gap-y-10">
+
+            </div>
+            <button class="expand_button mx-auto mt-8 block w-[214px] rounded-full bg-brand py-1.5 text-xl text-white hover:brightness-110 lg:hidden">Voir plus</button>
+        </div>
+
+        <!-- Comédie -->
+        <div class="section mt-10 lg:mt-12" id="comedy_movies">
+            <div class="section_header mb-6 flex flex-col items-center gap-3 md:flex-row md:gap-8">
+                <h1 class="section_title text-[32px] font-semibold md:text-[40px] lg:text-5xl">Comédie</h1>
+            </div>
+            <div class="section_content grid grid-cols-1 gap-7 md:grid-cols-2 md:gap-8 lg:grid-cols-3 lg:gap-x-11 lg:gap-y-10">
+
+            </div>
+            <button class="expand_button mx-auto mt-8 block w-[214px] rounded-full bg-brand py-1.5 text-xl text-white hover:brightness-110 lg:hidden">Voir plus</button>
+        </div>
+
+        <!-- Autres 1 : catégorie choisie dans le menu déroulant -->
+        <div class="section mt-10 lg:mt-12" id="other_movies1">
+            <div class="section_header mb-6 flex flex-col items-center gap-3 md:flex-row md:gap-8">
+                <h1 class="section_title text-[32px] font-semibold md:text-[40px] lg:text-5xl">Autres:</h1>
+                <div class="relative w-[285px] md:w-[242px] lg:w-[404px]">
+                    <select class="genre_select w-full cursor-pointer appearance-none border border-black bg-white py-2 pl-3 pr-12 text-[28px] font-semibold md:text-[32px] lg:py-3 lg:pl-5 lg:text-4xl" id="other_movies1_select" name="genre">
+                    </select>
+                    <span class="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-2xl lg:text-3xl" aria-hidden="true">▼</span>
+                </div>
+            </div>
+            <div class="section_content grid grid-cols-1 gap-7 md:grid-cols-2 md:gap-8 lg:grid-cols-3 lg:gap-x-11 lg:gap-y-10">
+
+            </div>
+            <button class="expand_button mx-auto mt-8 block w-[214px] rounded-full bg-brand py-1.5 text-xl text-white hover:brightness-110 lg:hidden">Voir plus</button>
+        </div>
+
+        <!-- Autres 2 -->
+        <div class="section mt-10 lg:mt-12" id="other_movies2">
+            <div class="section_header mb-6 flex flex-col items-center gap-3 md:flex-row md:gap-8">
+                <h1 class="section_title text-[32px] font-semibold md:text-[40px] lg:text-5xl">Autres:</h1>
+                <div class="relative w-[285px] md:w-[242px] lg:w-[404px]">
+                    <select class="genre_select w-full cursor-pointer appearance-none border border-black bg-white py-2 pl-3 pr-12 text-[28px] font-semibold md:text-[32px] lg:py-3 lg:pl-5 lg:text-4xl" id="other_movies2_select" name="genre">
+                    </select>
+                    <span class="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-2xl lg:text-3xl" aria-hidden="true">▼</span>
+                </div>
+            </div>
+            <div class="section_content grid grid-cols-1 gap-7 md:grid-cols-2 md:gap-8 lg:grid-cols-3 lg:gap-x-11 lg:gap-y-10">
+
+            </div>
+            <button class="expand_button mx-auto mt-8 block w-[214px] rounded-full bg-brand py-1.5 text-xl text-white hover:brightness-110 lg:hidden">Voir plus</button>
+        </div>
+
+    </main>
+
+    <!-- Fenêtre modale (cachée par défaut : retirer "hidden" et ajouter "flex" pour l'ouvrir)
+         Desktop : infos à gauche + affiche à droite, bouton "Fermer" en bas.
+         Tablette / mobile : croix en haut à droite, affiche placée après le résumé. -->
+    <div id="modal" class="fixed inset-0 z-50 hidden items-start justify-center overflow-y-auto bg-black/60 p-4 md:p-8">
+        <div class="relative flex w-full max-w-[780px] flex-col gap-6 border border-black bg-white p-6 md:p-10 lg:grid lg:grid-cols-[1fr_auto] lg:gap-x-12">
+            <button class="modal_close absolute right-4 top-4 text-3xl lg:hidden" aria-label="Fermer">❌</button>
+
+            <div class="order-1 pr-10 lg:order-none lg:pr-0">
+                <h2 id="modal_title" class="text-[32px] font-semibold leading-tight md:text-[40px] lg:text-5xl">title placeholder</h2>
+                <p id="modal_year_genres" class="text-xl font-semibold md:text-2xl">year - genres</p>
+                <p id="modal_rating_duration" class="text-xl font-semibold md:text-2xl">rated - duration (countries)</p>
+                <p id="modal_imdb" class="text-xl font-semibold md:text-2xl">IMDB score: -/10</p>
+                <p id="modal_box_office" class="text-xl font-semibold md:text-2xl">Recettes au box-office: -</p>
+                <p class="mt-4 text-xl font-semibold md:text-2xl">Réalisé par:</p>
+                <p id="modal_directors" class="text-xl md:text-2xl">directors placeholder</p>
+            </div>
+
+            <img src="" alt="Affiche du film" onerror="this.src='images/placeholder.png'" id="modal_poster"
+                 class="order-3 w-full object-cover md:w-[409px] lg:order-none lg:h-[334px] lg:w-[227px]">
+
+            <p id="modal_description" class="order-2 text-xl font-light md:text-2xl lg:order-none lg:col-span-2">long description placeholder</p>
+
+            <div class="order-4 lg:order-none lg:col-span-2">
+                <p class="text-xl font-light">Avec:</p>
+                <p id="modal_actors" class="text-xl font-light">actors placeholder</p>
+            </div>
+
+            <button class="modal_close mx-auto hidden w-[214px] rounded-full bg-brand py-1.5 text-xl text-white hover:brightness-110 lg:col-span-2 lg:block">Fermer</button>
+        </div>
+    </div>
+
+    <!-- Vignette générée par JS -->
+    <template id="vignette_template">
+        <div class="vignette relative aspect-square overflow-hidden">
+            <img src="" alt="Affiche film" onerror="this.src='images/placeholder.png'" class="vignette_poster h-full w-full object-cover">
+            <div class="vignette_overlay absolute inset-x-0 top-[13%] flex h-[41%] flex-col justify-between bg-black/50 px-6 py-3">
+                <h2 class="vignette_title line-clamp-2 text-2xl font-semibold leading-tight text-white">title placeholder</h2>
+                <button class="vignette_button self-end rounded-full bg-dark px-6 py-1 text-sm text-white hover:bg-black">Détails</button>
+            </div>
+        </div>
+    </template>
+
+    <!-- "Voir plus" / "Voir moins" -->
+    <script>
+        document.querySelectorAll('.expand_button').forEach((button) => {
+            button.addEventListener('click', () => {
+                const expanded = button.closest('.section').classList.toggle('expanded');
+                button.textContent = expanded ? 'Voir moins' : 'Voir plus';
+            });
+        });
+    </script>
+
+</body>
+</html>
