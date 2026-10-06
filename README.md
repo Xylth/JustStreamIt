@@ -16,7 +16,7 @@ git clone https://github.com/Xylth/JustStreamIt.git
 ```
 Se rendre à la racine du repository via la commande :
 ```
-cd prj
+cd JustStreamIt
 ```
 Installer et lancer l'api via le makefile:
 ```
