@@ -1,4 +1,6 @@
+//intialisation de la page d'accueil
 async function init(){
+    // Récupération des éléments du DOM
     const best_movie_poster = document.getElementById("best_movie_poster");
     const best_movie_title = document.getElementById("best_movie_title");
     const best_movie_short_description = document.getElementById("best_movie_short_description");
@@ -8,7 +10,7 @@ async function init(){
     const comedy_movies_container = document.getElementById("comedy_movies").querySelector(".section_content");
     const other_movies_selector = document.querySelectorAll(".genre_select");
     
-
+    // Récupération des genres et remplissage des sélecteurs
     let genres = await getGenres();
     other_movies_selector.forEach(select => {
         genres.forEach(genre => {
@@ -19,6 +21,7 @@ async function init(){
         });
     });
     
+    // Récupération des meilleurs films et affichage du meilleur film
     let highscores = await getBetterMovies("");
     const best = highscores[0];
     best_movie_poster.src = best.image_url;
@@ -29,10 +32,13 @@ async function init(){
     best_movie_button.addEventListener("click", () => {
         openModal(best.url);
     });
+
+    // Création des vignettes pour les 6 meilleurs films
     for (let i = 1; i <7 ; i++){
         createVignette(highscores[i], top_movies_container);
     }
 
+    // Création des vignettes pour les 6 meilleurs films d'action
     let action_movies = await getBetterMovies("Action");
     let i = 0;
     for (const movie of action_movies) {
@@ -41,6 +47,7 @@ async function init(){
         if (i >= 6) break;
     }
     
+    // Création des vignettes pour les 6 meilleurs films de comédie
     let comedy_movies = await getBetterMovies("Comedy");
     i = 0;
     for (const movie of comedy_movies) {
@@ -49,6 +56,7 @@ async function init(){
         if (i >= 6) break;
     }
 
+    // Création des vignettes suite à un evenement de changement de genre dans les sélecteurs
     other_movies_selector.forEach((select) => {
         select.addEventListener("change", async () => {
             const container = select.closest(".section").querySelector(".section_content");
@@ -67,6 +75,7 @@ async function init(){
     });
 }
 
+// Création d'une vignette de film et ajout dans le conteneur
 async function createVignette(movie, container){
     const template = document.getElementById("vignette_template");
     const clone = template.content.cloneNode(true);
@@ -79,6 +88,7 @@ async function createVignette(movie, container){
     container.appendChild(clone);   
 }
 
+// Supprime toutes les vignettes d'un conteneur
 function clearContainer(container){
     let vignettes = container.querySelectorAll(".vignette");
     vignettes.forEach(vignette => vignette.remove());
