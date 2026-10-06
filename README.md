@@ -25,4 +25,4 @@ make
 
 ## Utilisation
 
-Ouvrir le fichier index.html
+Pour utliser le projet, s'assurer de lancer l'api via le makefile à la racine du projet et ouvrir le fichier index.html
